@@ -3,8 +3,8 @@ import java.util.Hashtable;
 import java.util.Scanner;
 // import java.util.function.Function;
 import java.util.concurrent.TimeUnit;
-// import gameObjects.*;
-// import gameObjects.Living.*;
+import gameObjects.*;
+import gameObjects.Living.*;
 import gameObjects.Living.Player;
 
 public class App {
@@ -19,7 +19,7 @@ public class App {
         /*
          * Instructions
          */
-        out("You play as Simon. Enter the number corresponding to the action to do it. Enter \"leave\", \"quit\", or \"exit\" at any time to quit. Press Enter to begin.");
+        out("You play as Simon. Enter the number corresponding to the action to do it. If you enter an unvalid value, the game will default to the last option. Press Enter to begin.");
 
         int chapter = 1;
         int chapterProg = 0;
@@ -64,14 +64,14 @@ public class App {
         Messages.put("3choice1", "You yell out \"The beast isn't real! Guys! Hey!\" ");
         // 4
         Messages.put("4false", "You see the boys dancing in a circle around another in the middle. \"Kill the beast! Cut his throat! Spill his blood!\" The boy leaves the center, and after a moment, the circle opens up for you to enter. \"Kill the beast! Cut his throat! Spill his blood!\"");
-        Messages.put("4choice1", "You yell out \"The beast isn't real! Its just your fear! We don't need to be afraid!\" the wind wisks your words away...");
-        Messages.put("4choice2", "You yell out \"Calm down! Wait a moment, I have something to tell you all about the beast! Its not real!\" the wind wisks your words away...");
-        Messages.put("4choice3", "You yell out \"Sucks to your asmar!\" the wind wisks your words away...");
+        Messages.put("4choice1", "You enter the ring and yell out \"The beast isn't real! Its just your fear! We don't need to be afraid!\" the wind wisks your words away...");
+        Messages.put("4choice2", "You enter the ring and yell out \"Calm down! Wait a moment, I have something to tell you all about the beast! Its not real!\" the wind wisks your words away...");
+        Messages.put("4choice3", "You enter the ring and yell out to Piggy, \"Sucks to your asmar!\" the wind wisks your words away...");
         // 5
-        Messages.put("5false", "");
-        Messages.put("5true", "");
-        Messages.put("5choice1", "");
-        Messages.put("5choice2", "");
+        Messages.put("5false", "The ring closes around you like a great monster snapping its mouth shut on you, swallowing you whole. The boys chant faster and faster, \"Kill the beast! Cut his throat! Spill his blood! Kill the beast! Cut his throat! Spill his blood! Do him in!\" you realize with horror the savages' cruel intentions... ");
+        Messages.put("5true", "you are laying flat on the ground, the savages beating you with their sticks, and the first of them are starting to stab. Waves of pain wash over you...");
+        Messages.put("5choice1", "You ball up into a fetal position, and almost immediately the spears fall upon you. breaking your stance and leaving you flat on the floor. You try and get up...");
+        Messages.put("5choice2", "You try and escape the circle, you run to the edge and break through. Freedom! but the terrror is still behind you, and you realize it is below you as well, as you stumble off the edge. There is a moment of weightlessness and then blackness... You open your eyes, recovering from your brief unconsciousness. The pain is everywhere. It is all consuming and you can think of nothing else. ");
         // 6
         Messages.put("6false", "");
         Messages.put("6true", "");
@@ -99,7 +99,7 @@ public class App {
 
 
 
-        Player Simon = new Player("Simon", "A good child, the representation of truth");
+        Player Simon = new Player("Simon", "A good child, the representation of truth", 1000);
         Simon.setHealth(1000);
         
         while (Simon.getHealth() > 0) {
@@ -107,7 +107,7 @@ public class App {
             if (started.equals(false)) {
                 reader = scan.nextLine().toString().toLowerCase();
                 out("Welcome Simon, enjoy the dance.\n");
-                TimeUnit.MILLISECONDS.sleep(500);
+                TimeUnit.SECONDS.sleep(3);
                 started = true;
             }
             
@@ -160,15 +160,17 @@ public class App {
             if (chapter == 5) {
                 out(Messages.get(Integer.toString(chapter) + c5Sent.toString()));
                 c5Sent = true;
-                out("1: " + "");
-                out("2: " + "");
+                out("1: " + "Ball up");
+                out("2: " + "Try to escape");
+                out("3: "+ "Give in");
                 reader = scan.nextLine().toString().toLowerCase();
                 if (reader.contains("1")) {
-                    chapterProg += 0;
+                    chapterProg += 50;
                     out(Messages.get("5choice1"));
                 }
                 else {
-                    chapterProg += 0;
+                    if (reader.contains("2"))
+                    chapterProg += 100;
                     out(Messages.get("5choice2"));
                 }
             }
@@ -255,6 +257,7 @@ public class App {
             
 
             TimeUnit.MILLISECONDS.sleep(500);
+            out("\n\n ~-~-~-~-~-~-~-");
     }
     
     out(Messages.get("Death"));//death event
