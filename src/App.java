@@ -24,6 +24,7 @@ public class App {
         int chapter = 1;
         int chapterProg = 0;
         int runCount = 0;
+
         Boolean started = false;
 
         Boolean c1Sent = false;
@@ -37,6 +38,9 @@ public class App {
 
         Boolean waited = false;
         Boolean waited2 = false;
+
+        Boolean fiveOption1Chosen = false;
+
         Scanner scan = new Scanner(System.in);
         String reader;
 
@@ -63,7 +67,7 @@ public class App {
         Messages.put("3false", "You enter through the long narrow bridge, a feeling of foreboding fills your stomach but you ignore it. You reach the end of the bridge and you see the boys dancing around, encircling a dancer in the center. The single dancer leaves the center and joins his fellows in the circle; the circle then opens up to let you enter...");
         Messages.put("3choice1", "You yell out \"The beast isn't real! Guys! Hey!\" ");
         // 4
-        Messages.put("4false", "You see the boys dancing in a circle around another in the middle. \"Kill the beast! Cut his throat! Spill his blood!\" The boy leaves the center, and after a moment, the circle opens up for you to enter. \"Kill the beast! Cut his throat! Spill his blood!\"");
+        Messages.put("4false", "You see the boys dancing in a circle around another in the middle. \"Kill the beast! Cut his throat! Spill his blood!\" The boy leaves the center, and after a moment, the circle opens up for you to enter. \"Kill the beast! Cut his throat! Spill his blood!\"...");
         Messages.put("4choice1", "You enter the ring and yell out \"The beast isn't real! Its just your fear! We don't need to be afraid!\" the wind wisks your words away...");
         Messages.put("4choice2", "You enter the ring and yell out \"Calm down! Wait a moment, I have something to tell you all about the beast! Its not real!\" the wind wisks your words away...");
         Messages.put("4choice3", "You enter the ring and yell out to Piggy, \"Sucks to your asmar!\" the wind wisks your words away...");
@@ -71,7 +75,11 @@ public class App {
         Messages.put("5false", "The ring closes around you like a great monster snapping its mouth shut on you, swallowing you whole. The boys chant faster and faster, \"Kill the beast! Cut his throat! Spill his blood! Kill the beast! Cut his throat! Spill his blood! Do him in!\" you realize with horror the savages' cruel intentions... ");
         Messages.put("5true", "you are laying flat on the ground, the savages beating you with their sticks, and the first of them are starting to stab. Waves of pain wash over you...");
         Messages.put("5choice1", "You ball up into a fetal position, and almost immediately the spears fall upon you. breaking your stance and leaving you flat on the floor. You try and get up...");
-        Messages.put("5choice2", "You try and escape the circle, you run to the edge and break through. Freedom! but the terrror is still behind you, and you realize it is below you as well, as you stumble off the edge. There is a moment of weightlessness and then blackness... You open your eyes, recovering from your brief unconsciousness. The pain is everywhere. It is all consuming and you can think of nothing else. ");
+        Messages.put("5choice2", "You try and escape the circle, you run to the edge and break through. Freedom! but the terror is still behind you, and you realize it is below you as well, as you stumble off the edge. There is a moment of weightlessness and then blackness... You open your eyes, recovering from your brief unconsciousness. The pain is everywhere. It is all consuming and you can think of nothing else... ");
+        Messages.put("5choice3", "You realize there is no hope of avoiding your death. You drop to your knees, and then lay down on your stomach. The mob surges in and you feel spears impale your legs, your arms, your stomach. You close your eyes, giving in to the agony of it all. A little un' starts hitting your head with a rock. \033[3mThump\033[0m you see stars. \033[3mThump\033[0m the world dims. \033[3mThump\033[0m the world goes black as your skull caves in...");
+        Messages.put("5choice1.20", "");
+        Messages.put("5choice1.21", "");
+        Messages.put("5death", "Once the once sane boys have had their way with you, they discard your body over the cliff. You land on your neck and it snaps backward, throwing your head back. Had you been alive and your face not caved in, you would have gotten one last look at Ralph, staring down at you from where he had thrown you...");
         // 6
         Messages.put("6false", "");
         Messages.put("6true", "");
@@ -106,7 +114,7 @@ public class App {
             reader = "";
             if (started.equals(false)) {
                 reader = scan.nextLine().toString().toLowerCase();
-                out("Welcome Simon, enjoy the dance.\n");
+                out("\u001B[31mWelcome Simon, enjoy the dance.\n\u001B[37m");
                 TimeUnit.SECONDS.sleep(3);
                 started = true;
             }
@@ -162,16 +170,31 @@ public class App {
                 c5Sent = true;
                 out("1: " + "Ball up");
                 out("2: " + "Try to escape");
-                out("3: "+ "Give in");
+                out("3: " + "Give in");
                 reader = scan.nextLine().toString().toLowerCase();
-                if (reader.contains("1")) {
-                    chapterProg += 50;
-                    out(Messages.get("5choice1"));
+                if (fiveOption1Chosen.equals(true)) {
+
                 }
                 else {
-                    if (reader.contains("2"))
-                    chapterProg += 100;
-                    out(Messages.get("5choice2"));
+                    if (reader.contains("1")) {
+                        chapterProg += 50;
+                        fiveOption1Chosen = true;
+                        out(Messages.get("5choice1"));
+                        Simon.setHealth(Simon.getHealth() - 100 - (50 * runCount));
+                    }
+                    else {
+                        if (reader.contains("2")) {
+                        chapterProg += 100;
+                        out(Messages.get("5choice2"));
+                        Simon.setHealth(Simon.getHealth() - 300 - (50 * runCount));
+                        }
+                        else {
+                            out(Messages.get("5choice3"));
+                            TimeUnit.SECONDS.wait(7);
+                            out(Messages.get("5death"));
+                            Simon.setHealth(0);
+                        }
+                    }
                 }
             }
             // Chapter 4
@@ -180,7 +203,7 @@ public class App {
                 c4Sent = true;
                 out("1: " + "Enter, say the beast isn't real.");
                 out("2: " + "Enter, tell them to calm down");
-                out("3" + "Enter, yell out to Piggy");
+                out("3: " + "Enter, yell out to Piggy");
                 reader = scan.nextLine().toString().toLowerCase();
                 if (reader.contains("1")) {
                     chapterProg += 100;
@@ -200,15 +223,16 @@ public class App {
 
             // Chapter 3
             if (chapter == 3) {
-                out(Messages.get(Integer.toString(chapter) + c3Sent.toString()));
-                c3Sent = true;
-                out("1: " + "");
-                out("2: " + "");
-                reader = scan.nextLine().toString().toLowerCase();
+                // out(Messages.get(Integer.toString(chapter) + c3Sent.toString()));
+                // c3Sent = true;
+                // out("1: " + "");
+                // out("2: " + "");
+                // reader = scan.nextLine().toString().toLowerCase();
                 
-                chapterProg += 100;
-                out(Messages.get("3choice1"));
-                
+                // chapterProg += 100;
+                // out(Messages.get("3choice1"));
+                chapter = 4;
+                continue;
             }
 
             // Chapter 2
