@@ -5,6 +5,7 @@ public class Player extends Living {
     public Player(String newName, String newDesc, int health) {
         super(newName, newDesc);
         health = 1000;
+        this.health = health;
     }
     public int getHealth() {
         return health;
